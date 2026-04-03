@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>DocInfo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+    pre { background: #f4f4f4; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; }
+    h1 { color: #333; }
+  </style>
+</head>
+<body>
+  <h1>Documento Unificado</h1>
+  <pre id="merged"></pre>
+
+  <script>
+    async function loadAndMerge(files) {
+      let fullText = "";
+      for (const file of files) {
+        const response = await fetch(file);
+        const text = await response.text();
+        fullText += text + "\n\n"; // agrega separación entre archivos
+      }
+      document.getElementById("merged").textContent = fullText;
+    }
+
+    // Nombres exactos de tus archivos
+    loadAndMerge([
+      "DOC-INFO_part1.txt",
+      "DOC-INFO_part2.txt",
+      "DOC-INFO_part3.txt"
+    ]);
+  </script>
+</body>
+</html>
