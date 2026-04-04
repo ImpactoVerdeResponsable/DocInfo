@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>DocInfo</title>
+  <title>DocInfo Unificado</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
     pre { background: #f4f4f4; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; }
@@ -10,26 +10,29 @@
   </style>
 </head>
 <body>
-  <h1>DOC-INFO</h1>
+  <h1>Documento Unificado</h1>
   <pre id="merged"></pre>
 
   <script>
-    async function loadAndMerge(files) {
+    async function loadAndMerge() {
       let fullText = "";
-      for (const file of files) {
-        const response = await fetch(file);
-        const text = await response.text();
-        fullText += text + "\n\n"; // agrega separación entre archivos
+      let part = 1;
+      while (true) {
+        const filename = `DOC-INFO_part${part}.txt`;
+        try {
+          const response = await fetch(filename);
+          if (!response.ok) break; // si no existe, termina el bucle
+          const text = await response.text();
+          fullText += text + "\n\n"; // agrega separación entre partes
+          part++;
+        } catch (e) {
+          break;
+        }
       }
-      document.getElementById("merged").textContent = fullText;
+      document.getElementById("merged").textContent = fullText || "No se encontraron archivos.";
     }
 
-    // Nombres exactos de tus archivos
-    loadAndMerge([
-      "DOC-INFO_part1.txt",
-      "DOC-INFO_part2.txt",
-      "DOC-INFO_part3.txt"
-    ]);
+    loadAndMerge();
   </script>
 </body>
 </html>
